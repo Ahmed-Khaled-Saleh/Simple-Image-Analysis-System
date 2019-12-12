@@ -8,9 +8,15 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from second import Ui_OtherWindow
+from secondPage import Ui_OtherWindow
+from second import Ui_SecondWindow
 
 class Ui_MainWindow(object):
+    def colorImage(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_SecondWindow()
+        self.ui.setupUi(self.window)
+        self.window.show()
     def grayLevelImage(self):
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_OtherWindow()
@@ -34,7 +40,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("background-color: rgb(251, 251, 251);")
+        self.pushButton.setStyleSheet("background-color: rgb(25, 148, 200);")
         self.pushButton.setObjectName("pushButton")
         self.pushButton.clicked.connect(self.grayLevelImage)
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
@@ -45,9 +51,10 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.pushButton_2.setFont(font)
-        self.pushButton_2.setStyleSheet("background-color: rgb(251, 251, 251);")
+        self.pushButton_2.setStyleSheet("\n"
+"background-color: rgb(64, 140, 255);")
         self.pushButton_2.setObjectName("pushButton_2")
-        self.pushButton_2.clicked.connect(self.grayLevelImage)
+        self.pushButton_2.clicked.connect(self.colorImage)
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(200, 130, 381, 91))
         font = QtGui.QFont()
@@ -75,7 +82,7 @@ class Ui_MainWindow(object):
         self.pushButton.setToolTip(_translate("MainWindow", "<html><head/><body><p align=\"center\"><br/></p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "Gray Level Image"))
         self.pushButton_2.setText(_translate("MainWindow", "Colored Image"))
-        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; color:#ffffff;\">Image Segmentation </span></p><p align=\"center\"><span style=\" font-size:16pt; color:#ffffff;\">(Edge Detection &amp; Noise Reduction)</span></p></body></html>"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; color:#1994c8;\">Image Segmentation </span></p><p align=\"center\"><span style=\" font-size:16pt; color:#1994c8;\">(Edge Detection &amp; Noise Reduction)</span></p></body></html>"))
 
 
 if __name__ == "__main__":
