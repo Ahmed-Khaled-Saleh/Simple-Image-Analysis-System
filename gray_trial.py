@@ -4,43 +4,53 @@ import matplotlib.pyplot as plt
 from skimage.filters import roberts, sobel, sobel_h, sobel_v, scharr, \
     scharr_h, scharr_v, prewitt, prewitt_v, prewitt_h
 
-class Gray_scale_img:
+class MyImage:
 
     def __init__(self,path):
         '''
         take an image path and returns an image in the grayscale mode
         '''
-        self.image = Image.open(path)
-        self.image = self.image.convert(mode='L')
-        return self.image
+        self.original = Image.open(path)
+        self.image = self.original.convert(mode='L')
 
-    def apply_detector(self,detector_name,img):
+    def return_tupled_image(self):
+        return self.original,self.image
+
+
+    def apply_detector(self,detector_name):
         '''
         takes the type of the edge detector and the image 
         returns ndarray of the image after applying the detector
         '''
-        self.detectedd_img = detector_name(self.image)
-        return self.detectedd_img
-    
-def plot_img(img_list,title):
-        '''
-            Takes a list of images and a list of titles for every image
-            plot the images on a single page titled as ordered
-        '''
-    fig, ax = plt.subplots(ncols=len(img_list), sharex=True, sharey=True,
-                    figsize=(8, 4))
+        self.detected_img = detector_name(self.image)
+        return self.detected_img
+
+    def noise_removal(self):
+        pass
+
+
+
+def plot_img(img_list,titles):
+    '''
+        Takes a list of images and a list of titles for every image
+        plot the images on a single page titled as ordered
+    '''
+    fig,ax = plt.subplots(ncols=len(img_list), sharex=True, sharey=True, figsize=(8, 4))
     for i,img in enumerate(img_list):
         ax[i].imshow(img, cmap=plt.cm.gray)
-        ax[i].set_title(title[i])
+        ax[i].set_title(titles[i])
     for a in ax:
         a.axis('off')
 
     plt.tight_layout()
     plt.show()
 
-imag = Gray_scale_img('new.jpeg')
-robert_detector = imag.apply_detector(roberts,img)
-sobel_detector = imag.apply_detector(sobel,img)
-imag.plot_img([imag,robert_detector,sobel_detector],['origina','robert detector','sobel detector'])
+
+
+image_object = MyImage('img.jpeg')
+original,gray_scale= image_object.return_tupled_image()
+robert_detector = image_object.apply_detector(roberts)
+sobel_detector = image_object.apply_detector(sobel)
+plot_img([original,gray_scale,robert_detector,sobel_detector],['original','gray scale','robert detector','sobel detector'])
 
 
