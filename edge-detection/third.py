@@ -11,6 +11,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import second
 
 class Ui_thirdPageWindow(object):
+    
+    def show_noise_free(self):
+        imagePath = second.images[3]
+        pixmap =QPixmap(imagePath)
+        self.label_5.setPixmap(QPixmap(pixmap))
 
     
     def setupUi(self, MainWindow):
@@ -57,7 +62,7 @@ class Ui_thirdPageWindow(object):
         self.pushButton.setFont(font)
         self.pushButton.setStyleSheet("background-color: rgb(25, 148, 200);")
         self.pushButton.setObjectName("pushButton")
-
+        
         #Beginning of image labels (where image will be showed)
         # label_5 for noise (lower right corner)
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
@@ -66,9 +71,8 @@ class Ui_thirdPageWindow(object):
         self.label_5.setOpenExternalLinks(True)
         self.label_5.setObjectName("label_5")
         self.label_5.setScaledContents(True)
-        imagePath = second.images[3]
-        pixmap =QPixmap(imagePath)
-        self.label_5.setPixmap(QPixmap(pixmap))
+        self.pushButton.clicked.connect(self.show_noise_free)
+        
         
 
         # original (upper left corner)
