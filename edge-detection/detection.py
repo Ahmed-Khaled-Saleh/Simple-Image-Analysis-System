@@ -1,17 +1,22 @@
 from PIL import Image,ImageFilter
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib 
+
 from skimage.filters import roberts, sobel, sobel_h, sobel_v, scharr, \
     scharr_h, scharr_v, prewitt, prewitt_v, prewitt_h
+
 
 class MyImage:
 
     def __init__(self,path):
         self.original = Image.open(path)
         self.image = self.original.convert(mode='L')
+        self.image.save('./gray_saved.jpg') 
+        self.gray_path = './gray_saved.jpg'
 
     def return_tupled_image(self):
-        return self.original,self.image
+        return self.original,self.image,self.gray_path
 
 
     def apply_detector(self,detector_name):
@@ -20,12 +25,23 @@ class MyImage:
         returns ndarray of the image after applying the detector
         '''
         self.detected_img = detector_name(self.image)
-        return self.detected_img
+        #self.detected_pil = Image.fromarray(self.detected_img)
+        matplotlib.image.imsave('./detected.jpg',self.detected_img,cmap=plt.cm.gray)
+        #self.detected_path = self.detected_pil.save('./detedted.png')
+        return self.detected_img,'./detected.jpg'
+        
 
     def noise_removal(self):
+        '''
+        returns a noise-free image(an image without noise)
+        blur an image then apply minimum filter to it
+        '''
         im1 = self.original.filter(ImageFilter.BLUR)
         im2 = self.original.filter(ImageFilter.MinFilter(3))
-        return im2
+        saved = im2.save('noise-free.png')
+        return './noise-free.png'
+
+    
 
 
 
