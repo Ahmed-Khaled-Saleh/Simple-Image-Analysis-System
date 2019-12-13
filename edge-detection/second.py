@@ -12,6 +12,12 @@ from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFil
 from PyQt5.QtGui import QIcon, QPixmap
 from third import Ui_thirdPageWindow
 from detection import *
+from PIL import Image
+
+
+
+
+images=[]
 
 class Ui_SecondWindow(object):
 
@@ -25,26 +31,48 @@ class Ui_SecondWindow(object):
         pixmap =QPixmap(imagePath)
         self.label.setPixmap(QPixmap(pixmap))
         self.img_path = imagePath
+        images.append(self.img_path)
+
+
+    # def done(self):
+    #     self.window = QtWidgets.QMainWindow()
+    #     self.ui = Ui_thirdPageWindow()
+    #     self.ui.setupUi(self.window)
+    #     self.window.show()
 
 
     def done(self):
+        self.analysis_of_img()
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_thirdPageWindow()
         self.ui.setupUi(self.window)
         self.window.show()
 
-    
+
     def analysis_of_img(self):
+        '''
+        Apply edge detection on the image
+        first read the image path , create an image object , detect edges 
+        '''
         img_path = self.img_path
         img_object =  MyImage(img_path)
-        original , gray_level = img_object.return_tupled_image()
+        original , gray_level , gray_path = img_object.return_tupled_image()
         if self.radioButton.isChecked():
-            detector_type = 'Robert'
-            detected_img = img_object.apply_detector(roberts)
+            detected_img,detected_path = img_object.apply_detector(roberts)
         else:
-            detector_type = 'Sobel'
-            detected_img = img_object.apply_detector(sobel)
-        plot_img([original,detected_img],['original',detector_type + ' ' + 'detector'])
+            detected_img,detected_path = img_object.apply_detector(sobel)
+
+
+        self.detected_img = detected_img #numpy.ndarray
+        self.original  = original
+        self.gray_level = gray_level #PIL.Image.Image
+        noise_free_path = img_object.noise_removal()
+        ## append the tow images now
+        images.append(gray_path)
+        images.append(detected_path)
+        images.append(noise_free_path)
+        
+
         
         
     def setupUi(self, MainWindow):
@@ -125,7 +153,7 @@ class Ui_SecondWindow(object):
         self.pushButton_2.setStyleSheet("\n"
 "background-color: rgb(25, 148, 200);")
         self.pushButton_2.setObjectName("pushButton_2")
-        self.pushButton_2.clicked.connect(self.analysis_of_img)
+        self.pushButton_2.clicked.connect(self.done)
 
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(250, 110, 301, 181))
