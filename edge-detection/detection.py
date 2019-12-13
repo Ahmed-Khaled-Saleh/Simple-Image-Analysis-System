@@ -46,5 +46,3 @@ def plot_img(img_list,titles):
 
 
 
-
-
