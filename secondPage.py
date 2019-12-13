@@ -8,9 +8,17 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
+from PyQt5.QtGui import QIcon, QPixmap
 from thirdPage import Ui_ThirdWindow
 
 class Ui_OtherWindow(object):
+    def openDialogBox(self):
+        filename = QFileDialog.getOpenFileName()
+        imagePath = filename[0]
+        self.textBrowser.setText(imagePath)
+        pixmap =QPixmap(imagePath)
+        self.label.setPixmap(QPixmap(pixmap))
     def done(self):
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_ThirdWindow()
@@ -42,6 +50,7 @@ class Ui_OtherWindow(object):
         self.pushButton.setFont(font)
         self.pushButton.setStyleSheet("background-color: rgb(25, 148, 200);")
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(self.openDialogBox)
         self.radioButton = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton.setGeometry(QtCore.QRect(310, 320, 181, 31))
         font = QtGui.QFont()
@@ -78,6 +87,7 @@ class Ui_OtherWindow(object):
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(250, 110, 301, 181))
         self.label.setText("")
+        self.label.setScaledContents(True)
         self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
